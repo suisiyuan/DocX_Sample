@@ -13,11 +13,11 @@ namespace DocX_Sample
     {
         static void Main(string[] args)
         {
+            //如果已经有文档则删除
             if (File.Exists("../test.docx"))
             {
                 File.Delete("../test.docx");
             }
-
 
             using (DocX document = DocX.Create(@"../test.docx"))
             {   
@@ -29,12 +29,30 @@ namespace DocX_Sample
                 document.InsertParagraph("test!", false, formatting);
 
                 //添加图片
-                Paragraph p = document.InsertParagraph("Here is Picture 1", false);
+                Paragraph p = document.InsertParagraph();
                 Novacode.Image img = document.AddImage(@"../test.jpg");
                 Picture pic = img.CreatePicture();
                 p.InsertPicture(pic, 0);
-                Console.WriteLine("pic.width: " + pic.Width);
-                Console.WriteLine("pic.height: " + pic.Height);
+                Console.WriteLine("照片宽度：" + pic.Width);
+                Console.WriteLine("照片高度： " + pic.Height);
+
+
+                //添加表格
+                Table table = p.InsertTableAfterSelf(3, 3);
+
+
+                //页眉页脚控制
+                document.AddFooters();
+                Footers footers = document.Footers;
+                Footer first = footers.first;
+                document.DifferentFirstPage = true;
+                document.DifferentOddAndEvenPages = true;
+                p = first.InsertParagraph();
+                p.Append("This is the first pages footer.");
+
+
+                //计算段落数
+                Console.WriteLine("段落数：" + document.Paragraphs.Count);
 
                 document.Save();
             }
