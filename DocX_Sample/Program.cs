@@ -51,8 +51,10 @@ namespace DocX_Sample
                 p.Append("This is the first pages footer.");
 
 
-                //计算段落数
+                //输出文档属性
                 Console.WriteLine("段落数：" + document.Paragraphs.Count);
+                Console.WriteLine("图片数：" + document.Pictures.Count);
+                Console.WriteLine("节数：" + document.Sections.Count);
 
                 document.Save();
             }
